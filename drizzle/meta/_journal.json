@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1700334132251,
+      "tag": "0000_brainy_nick_fury",
+      "breakpoints": true
+    }
+  ]
+}
