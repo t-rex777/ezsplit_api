@@ -5,6 +5,7 @@ import { groups } from './group';
 export const users = pgTable('users', {
   id: serial('id').primaryKey(),
   name: text('name').notNull(),
+  email: text('email').notNull(),
   password: text('password').notNull(),
   dob: text('dob'),
   image: text('image'),

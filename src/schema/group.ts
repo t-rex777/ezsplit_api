@@ -10,7 +10,7 @@ export const groups = pgTable('groups', {
 });
 
 /**
- * defined relation for group with user (many-to-many)
+ * defined relation for group with user (many)
  */
 export const groupRelations = relations(groups, ({ many }) => ({
   users: many(usersOnGroups),

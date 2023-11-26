@@ -22,6 +22,9 @@ dependencies:
     version: 3.4.3
 
 devDependencies:
+  '@faker-js/faker':
+    specifier: ^8.3.1
+    version: 8.3.1
   '@types/express':
     specifier: ^4.17.21
     version: 4.17.21
@@ -31,6 +34,9 @@ devDependencies:
   drizzle-kit:
     specifier: ^0.20.4
     version: 0.20.4
+  esbuild-register:
+    specifier: ^3.5.0
+    version: 3.5.0(esbuild@0.18.20)
   eslint:
     specifier: ^8.54.0
     version: 8.54.0
@@ -597,6 +603,11 @@ packages:
   /@eslint/js@8.54.0:
     resolution: {integrity: sha512-ut5V+D+fOoWPgGGNj83GGjnntO39xDy6DWxO0wb7Jp3DcMX0TfIqdzHF85VTQkerdyGmuuMD9AKAo5KiNlf/AQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    dev: true
+
+  /@faker-js/faker@8.3.1:
+    resolution: {integrity: sha512-FdgpFxY6V6rLZE9mmIBb9hM0xpfvQOSNOLnzolzKwsE1DH+gC7lEKV1p1IbR0lAYyvYd5a4u3qWJzowUkw1bIw==}
+    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
     dev: true
 
   /@fastify/busboy@2.1.0:
