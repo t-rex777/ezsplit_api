@@ -15,25 +15,20 @@ const main = async () => {
   const data1: (typeof users.$inferInsert)[] = [];
   const data2: (typeof groups.$inferInsert)[] = [];
 
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < 2; i++) {
     data1.push({
       name: faker.internet.userName(),
       email: faker.internet.email(),
       password: faker.internet.password(),
       dob: faker.date.birthdate().toDateString(),
-      createdAt: new Date(),
       currency: 'INR',
-      // groupId: 1,
       image: faker.image.avatar(),
-      id: i + 1,
     });
   }
 
   for (let i = 0; i < 1; i++) {
     data2.push({
       name: faker.internet.userName(),
-      createdAt: new Date(),
-      id: i + 1,
       image: faker.image.avatar(),
     });
   }
@@ -43,8 +38,8 @@ const main = async () => {
   //   await db.delete(users);
   //   await db.delete(groups);
 
-  // await db.insert(groups).values(data2);
-  await db.insert(users).values(data1);
+  await db.insert(groups).values(data2);
+  // await db.insert(users).values(data1);
   // await db.insert(usersOnGroups).values({
   //   groupId: data2[0].id,
   //   userId: data1[0].id,

@@ -1,12 +1,14 @@
 import express from 'express';
-import { userController } from '../controllers';
+import { UserController } from '../controllers';
 
 const app = express();
-const { login, register, all, update } = new userController();
+const { login, register, getAllUsers, updateUser, deleteUser, getUser } = new UserController();
 
+app.get('/:userId', getUser);
+app.get('/users', getAllUsers);
 app.post('/login', login);
 app.post('/register', register);
-app.get('/users', all);
-app.patch('/update/:userId', update);
+app.patch('/update/:userId', updateUser);
+app.delete('/delete/:userId', deleteUser);
 
 export default app;
