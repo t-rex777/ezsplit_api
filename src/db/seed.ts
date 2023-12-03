@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import * as dotenv from 'dotenv';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
-import { groups, users, usersOnGroups } from '../schema';
+import { groups, users } from '../schema';
 dotenv.config();
 
 if (!('DATABASE_URL' in process.env)) throw new Error('DATABASE_URL not found on .env.development');
@@ -23,7 +23,7 @@ const main = async () => {
       dob: faker.date.birthdate().toDateString(),
       createdAt: new Date(),
       currency: 'INR',
-      groupId: 1,
+      // groupId: 1,
       image: faker.image.avatar(),
       id: i + 1,
     });
@@ -43,12 +43,12 @@ const main = async () => {
   //   await db.delete(users);
   //   await db.delete(groups);
 
-  await db.insert(groups).values(data2);
+  // await db.insert(groups).values(data2);
   await db.insert(users).values(data1);
-  await db.insert(usersOnGroups).values({
-    groupId: data2[0].id,
-    userId: data1[0].id,
-  });
+  // await db.insert(usersOnGroups).values({
+  //   groupId: data2[0].id,
+  //   userId: data1[0].id,
+  // });
 
   console.log('Seed done');
 };

@@ -5,12 +5,14 @@ import { groups } from './group';
 export const users = pgTable('users', {
   id: serial('id').primaryKey(),
   name: text('name').notNull(),
-  email: text('email').notNull(),
+  email: text('email').unique().notNull(),
   password: text('password').notNull(),
   dob: text('dob'),
   image: text('image'),
-  currency: text('currency'),
-  groupId: integer('group_id').references(() => groups.id),
+  currency: text('currency').default('INR'),
+  groupId: integer('group_id')
+    .references(() => groups.id)
+    .default(null),
   createdAt: timestamp('created_at').notNull().defaultNow(),
 });
 
