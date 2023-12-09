@@ -9,7 +9,6 @@ app.get('/', getAllGroups);
 app.post('/create', createGroup);
 app.post('/add-users/:groupId', addUsersToGroup);
 app.patch('/update/:groupId', updateGroup);
-app.patch('/update/:userId', updateGroup);
-app.delete('/delete', deleteGroup);
+app.delete('/delete/:groupId', deleteGroup);
 
 export default app;

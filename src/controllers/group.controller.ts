@@ -2,9 +2,6 @@ import { Request, Response } from 'express';
 import { GroupService } from '../services/group.service';
 
 export class GroupController {
-  /**
-   * @route POST /create
-   */
   async createGroup(req: Request, res: Response) {
     try {
       const data = req.body;
@@ -15,9 +12,6 @@ export class GroupController {
     }
   }
 
-  /**
-   * @route GET /groups
-   */
   async getAllGroups(_req: Request, res: Response) {
     try {
       const groups = await new GroupService().all();
@@ -27,9 +21,6 @@ export class GroupController {
     }
   }
 
-  /**
-   * @route GET /group/groupId
-   */
   async getGroupById(req: Request, res: Response) {
     try {
       const group = await new GroupService().find(parseInt(req.params.groupId));
@@ -39,9 +30,6 @@ export class GroupController {
     }
   }
 
-  /**
-   * @route PATCH /group/groupId
-   */
   async updateGroup(req: Request, res: Response) {
     try {
       const data = req.body;
@@ -54,9 +42,6 @@ export class GroupController {
     }
   }
 
-  /**
-   * @route DELETE /group/groupId
-   */
   async deleteGroup(req: Request, res: Response) {
     try {
       const { groupId } = req.params;

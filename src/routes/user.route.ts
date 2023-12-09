@@ -5,7 +5,7 @@ const app = express();
 const { login, register, getAllUsers, updateUser, deleteUser, getUser } = new UserController();
 
 app.get('/:userId', getUser);
-app.get('/users', getAllUsers);
+app.get('/', getAllUsers);
 app.post('/login', login);
 app.post('/register', register);
 app.patch('/update/:userId', updateUser);

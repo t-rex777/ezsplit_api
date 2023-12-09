@@ -22,7 +22,7 @@ export class GroupService {
   async addUsers(groupId: number, userIds: number[]) {
     const userGroupAssociations = new Array(userIds.length).fill('').map((_, i) => ({ userId: userIds[i], groupId }));
 
-    return await this.db.insert(userSchema.usersOnGroups).values(userGroupAssociations).execute();
+    return await this.db.insert(userSchema.usersOnGroups).values(userGroupAssociations).returning().execute();
   }
 
   async create(data: groupSchema.NewGroup) {
@@ -34,8 +34,6 @@ export class GroupService {
   }
 
   async delete(groupId: number) {
-    return await this.db.delete(groupSchema.groups).where(eq(groupSchema.groups.id, groupId)).returning({
-      deletedId: groupSchema.groups.id,
-    });
+    return await this.db.delete(groupSchema.groups).where(eq(groupSchema.groups.id, groupId)).returning();
   }
 }

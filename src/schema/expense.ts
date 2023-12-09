@@ -35,6 +35,10 @@ export const expenseRelations = relations(expenses, ({ one }) => ({
     fields: [expenses.borrower],
     references: [users.id],
   }),
+  modifiedBy: one(users, {
+    fields: [expenses.modifiedAt],
+    references: [users.id],
+  }),
 }));
 
 export type Expense = typeof expenses.$inferSelect;

@@ -1,7 +1,7 @@
 import bodyParser from 'body-parser';
 import 'dotenv/config';
 import express from 'express';
-import { groupRoutes, userRoutes } from './routes';
+import { categoryRoutes, expenseRoutes, groupRoutes, userRoutes } from './routes';
 
 const app = express();
 const port = 3000;
@@ -15,6 +15,8 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(bodyParser.json());
 app.use('/api/users', userRoutes);
 app.use('/api/groups', groupRoutes);
+app.use('/api/expenses', expenseRoutes);
+app.use('/api/category', categoryRoutes);
 
 app.listen(port, () => {
   return console.log(`Express is listening at http://localhost:${port}`);

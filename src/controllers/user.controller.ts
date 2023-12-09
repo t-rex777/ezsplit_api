@@ -3,9 +3,7 @@ import { UserService } from '../services/';
 import { GroupService } from '../services/group.service';
 
 export class UserController {
-  /**
-   * @route POST /login
-   */
+  /**   */
   async login(req: Request, res: Response) {
     try {
       const { email, password } = req.body;
@@ -23,9 +21,6 @@ export class UserController {
     }
   }
 
-  /**
-   * @route POST /register
-   */
   async register(req: Request, res: Response) {
     try {
       const data = req.body;
@@ -44,9 +39,6 @@ export class UserController {
     }
   }
 
-  /**
-   * @route PATCH /update/userId
-   */
   async updateUser(req: Request, res: Response) {
     try {
       const data = req.body;
@@ -60,9 +52,6 @@ export class UserController {
     }
   }
 
-  /**
-   * @route GET /users
-   */
   async getAllUsers(_req: Request, res: Response) {
     try {
       const users = await new UserService().all();
@@ -72,9 +61,6 @@ export class UserController {
     }
   }
 
-  /**
-   * @route GET /users/userId
-   */
   async getUser(req: Request, res: Response) {
     try {
       const user = await new UserService().findById(parseInt(req.params.userId));
@@ -84,9 +70,6 @@ export class UserController {
     }
   }
 
-  /**
-   * @route DELETE /users/userId
-   */
   async deleteUser(req: Request, res: Response) {
     try {
       const { userId } = req.params;
