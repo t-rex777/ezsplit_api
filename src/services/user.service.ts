@@ -28,7 +28,7 @@ export class UserService {
     const users = await this.db.insert(userSchema.users).values(data).returning();
 
     if (data.groupId) {
-      await this.db.insert(userSchema.usersOnGroups).values({
+      await this.db.insert(userSchema.usersToGroups).values({
         groupId: data.groupId,
         userId: users[0].id,
       });

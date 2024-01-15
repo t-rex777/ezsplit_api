@@ -1,4 +1,4 @@
 export * from './category';
-export * from './expense';
 export * from './group';
+export * from './groupExpense';
 export * from './user';

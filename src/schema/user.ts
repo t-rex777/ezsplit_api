@@ -20,8 +20,8 @@ export const users = pgTable('users', {
  * join table for many-to-many relationships
  * between users and groups
  **/
-export const usersOnGroups = pgTable(
-  'users_on_groups',
+export const usersToGroups = pgTable(
+  'users_to_groups',
   {
     userId: integer('user_id')
       .notNull()
@@ -38,22 +38,27 @@ export const usersOnGroups = pgTable(
  * here, it will be one to many relation between two of them
  * in the join table
  */
-export const usersOnGroupsRelations = relations(usersOnGroups, ({ one }) => ({
-  user: one(users, {
-    fields: [usersOnGroups.userId],
-    references: [users.id],
-  }),
-  group: one(groups, {
-    fields: [usersOnGroups.groupId],
-    references: [groups.id],
-  }),
+export const userRelations = relations(users, ({ many }) => ({
+  usersToGroups: many(usersToGroups),
 }));
 
 /**
- * defined relation for users
+ * defined relation for groups
  */
-export const userRelations = relations(users, ({ many }) => ({
-  groups: many(usersOnGroups),
+export const groupRelations = relations(groups, ({ many }) => ({
+  usersToGroups: many(usersToGroups),
+}));
+
+export const usersToGroupsRelations = relations(usersToGroups, ({ one }) => ({
+  group: one(groups, {
+    fields: [usersToGroups.groupId],
+    references: [groups.id],
+  }),
+
+  user: one(users, {
+    fields: [usersToGroups.userId],
+    references: [users.id],
+  }),
 }));
 
 export type User = typeof users.$inferSelect;

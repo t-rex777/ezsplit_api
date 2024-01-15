@@ -5,50 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1700334132251,
-      "tag": "0000_brainy_nick_fury",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1700997144285,
-      "tag": "0001_glamorous_tony_stark",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1701017368699,
-      "tag": "0002_flippant_trish_tilby",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1701019788991,
-      "tag": "0003_lonely_doctor_spectrum",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1701576544141,
-      "tag": "0004_amused_exiles",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "5",
-      "when": 1701577519507,
-      "tag": "0005_ambiguous_bloodstorm",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "5",
-      "when": 1701577631408,
-      "tag": "0006_flippant_raider",
+      "when": 1705338368295,
+      "tag": "0000_late_ma_gnuci",
       "breakpoints": true
     }
   ]
