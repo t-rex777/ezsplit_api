@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS "expenses_to_group_users" (
 	CONSTRAINT expenses_to_group_users_user_id_amount_expense_id PRIMARY KEY("user_id","amount","expense_id")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "expenses" (
+CREATE TABLE IF NOT EXISTS "group_expenses" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"category_id" integer NOT NULL,
@@ -80,25 +80,25 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "expenses_to_group_users" ADD CONSTRAINT "expenses_to_group_users_user_id_groups_id_fk" FOREIGN KEY ("user_id") REFERENCES "groups"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "expenses_to_group_users" ADD CONSTRAINT "expenses_to_group_users_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "expenses_to_group_users" ADD CONSTRAINT "expenses_to_group_users_expense_id_expenses_id_fk" FOREIGN KEY ("expense_id") REFERENCES "expenses"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "expenses_to_group_users" ADD CONSTRAINT "expenses_to_group_users_expense_id_group_expenses_id_fk" FOREIGN KEY ("expense_id") REFERENCES "group_expenses"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "expenses" ADD CONSTRAINT "expenses_category_id_categories_id_fk" FOREIGN KEY ("category_id") REFERENCES "categories"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "group_expenses" ADD CONSTRAINT "group_expenses_category_id_categories_id_fk" FOREIGN KEY ("category_id") REFERENCES "categories"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "expenses" ADD CONSTRAINT "expenses_group_id_groups_id_fk" FOREIGN KEY ("group_id") REFERENCES "groups"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "group_expenses" ADD CONSTRAINT "group_expenses_group_id_groups_id_fk" FOREIGN KEY ("group_id") REFERENCES "groups"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

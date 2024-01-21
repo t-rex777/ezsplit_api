@@ -4,7 +4,7 @@ import { categories } from './category';
 import { groups } from './group';
 import { users } from './user';
 
-export const groupExpenses = pgTable('expenses', {
+export const groupExpenses = pgTable('group_expenses', {
   id: serial('id').primaryKey(),
   name: text('name').notNull(),
   categoryId: integer('category_id')
@@ -24,7 +24,7 @@ export const groupExpenses = pgTable('expenses', {
 /**
  * relations for expense relations
  */
-export const expenseRelations = relations(groupExpenses, ({ one, many }) => ({
+export const expenseToGroupsRelations = relations(groupExpenses, ({ one, many }) => ({
   expenseToGroups: many(groups),
   category: one(categories, {
     fields: [groupExpenses.categoryId],
@@ -32,7 +32,7 @@ export const expenseRelations = relations(groupExpenses, ({ one, many }) => ({
   }),
 }));
 
-export const userRelations = relations(groups, ({ many }) => ({
+export const groupUserToExpensesRelations = relations(groups, ({ many }) => ({
   expenseToGroups: many(groupExpenses),
 }));
 
@@ -41,12 +41,12 @@ export const userRelations = relations(groups, ({ many }) => ({
  * if amount is negative then he is lender
  * else borrower
  */
-export const expensesToUsers = pgTable(
+export const expensesToGroupUsers = pgTable(
   'expenses_to_group_users',
   {
     userId: integer('user_id')
       .notNull()
-      .references(() => groups.id),
+      .references(() => users.id),
     expenseId: integer('expense_id')
       .notNull()
       .references(() => groupExpenses.id),
@@ -56,17 +56,17 @@ export const expensesToUsers = pgTable(
   (t) => ({ pk: primaryKey({ columns: [t.userId, t.amount, t.expenseId] }) }),
 );
 
-export const expenseToUserRelations = relations(expensesToUsers, ({ one }) => ({
+export const expenseToGroupUserRelations = relations(expensesToGroupUsers, ({ one }) => ({
   expense: one(groupExpenses, {
-    fields: [expensesToUsers.expenseId],
+    fields: [expensesToGroupUsers.expenseId],
     references: [groupExpenses.id],
   }),
 
   user: one(users, {
-    fields: [expensesToUsers.userId],
+    fields: [expensesToGroupUsers.userId],
     references: [users.id],
   }),
 }));
 
-export type Expense = typeof groupExpenses.$inferSelect;
-export type NewExpense = typeof groupExpenses.$inferInsert;
+export type GroupExpense = typeof groupExpenses.$inferSelect;
+export type NewGroupExpense = typeof groupExpenses.$inferInsert;

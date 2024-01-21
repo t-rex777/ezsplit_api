@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
-import { ExpenseService } from '../services';
+import { GroupExpenseService } from '../services';
 
-export class ExpenseController {
+export class GroupExpenseController {
   /**
    * @route POST /create
    */
   async createExpense(req: Request, res: Response) {
     try {
       const data = req.body;
-      const expense = await new ExpenseService().create(data);
+      const expense = await new GroupExpenseService().create(data);
 
       return res.status(200).json({ expense });
     } catch (error) {
@@ -21,7 +21,7 @@ export class ExpenseController {
    */
   async getAllExpenses(_req: Request, res: Response) {
     try {
-      const groups = await new ExpenseService().all();
+      const groups = await new GroupExpenseService().all();
       return res.status(200).json({ groups });
     } catch (error) {
       res.status(500).json({ error });
@@ -33,7 +33,7 @@ export class ExpenseController {
    */
   async getExpenseById(req: Request, res: Response) {
     try {
-      const expense = await new ExpenseService().find(parseInt(req.params.expenseId));
+      const expense = await new GroupExpenseService().find(parseInt(req.params.expenseId));
       return res.status(200).json({ expense });
     } catch (error) {
       res.status(500).json({ error });
@@ -48,7 +48,7 @@ export class ExpenseController {
       const data = req.body;
       const { expenseId } = req.params;
 
-      const user = await new ExpenseService().update(parseInt(expenseId), data);
+      const user = await new GroupExpenseService().update(parseInt(expenseId), data);
 
       return res.status(200).json({ user });
     } catch (error) {
@@ -62,7 +62,7 @@ export class ExpenseController {
   async deleteExpense(req: Request, res: Response) {
     try {
       const { userId } = req.params;
-      const user = await new ExpenseService().delete(parseInt(userId));
+      const user = await new GroupExpenseService().delete(parseInt(userId));
       return res.status(200).json({ user });
     } catch (error) {
       res.status(500).json({ error });

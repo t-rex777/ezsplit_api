@@ -6,7 +6,7 @@ const { createCategory, deleteCategory, getAllCategories, getCategoryById, updat
 
 app.get('/:categoryId', getCategoryById);
 app.get('/', getAllCategories);
-app.get('/create', createCategory);
+app.post('/create', createCategory);
 app.get('/update/:categoryId', updateCategory);
 app.get('/delete/:categoryId', deleteCategory);
 

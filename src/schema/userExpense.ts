@@ -21,7 +21,7 @@ export const userExpenses = pgTable('user_expenses', {
  * user and expense will make many to many relation
  * one user can have multiple expenses
  */
-export const expenseRelations = relations(userExpenses, ({ many, one }) => ({
+export const expenseToUsersRelations = relations(userExpenses, ({ many, one }) => ({
   expenseToUsers: many(users),
   category: one(categories, {
     fields: [userExpenses.categoryId],
@@ -29,7 +29,7 @@ export const expenseRelations = relations(userExpenses, ({ many, one }) => ({
   }),
 }));
 
-export const userRelations = relations(users, ({ many }) => ({
+export const userToExpensesRelations = relations(users, ({ many }) => ({
   expenseToUsers: many(userExpenses),
 }));
 
@@ -66,4 +66,4 @@ export const expenseToUserRelations = relations(expensesToUsers, ({ one }) => ({
 }));
 
 export type UserExpense = typeof userExpenses.$inferSelect;
-export type NewExpense = typeof userExpenses.$inferInsert;
+export type NewUserExpense = typeof userExpenses.$inferInsert;

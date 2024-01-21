@@ -1,5 +1,5 @@
 {
-  "id": "b0f987b6-9143-4ed6-8540-1982e56d73a0",
+  "id": "39d0f028-6ee1-4786-8740-078148b7df1c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -126,10 +126,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "expenses_to_group_users_user_id_groups_id_fk": {
-          "name": "expenses_to_group_users_user_id_groups_id_fk",
+        "expenses_to_group_users_user_id_users_id_fk": {
+          "name": "expenses_to_group_users_user_id_users_id_fk",
           "tableFrom": "expenses_to_group_users",
-          "tableTo": "groups",
+          "tableTo": "users",
           "columnsFrom": [
             "user_id"
           ],
@@ -139,10 +139,10 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "expenses_to_group_users_expense_id_expenses_id_fk": {
-          "name": "expenses_to_group_users_expense_id_expenses_id_fk",
+        "expenses_to_group_users_expense_id_group_expenses_id_fk": {
+          "name": "expenses_to_group_users_expense_id_group_expenses_id_fk",
           "tableFrom": "expenses_to_group_users",
-          "tableTo": "expenses",
+          "tableTo": "group_expenses",
           "columnsFrom": [
             "expense_id"
           ],
@@ -165,8 +165,8 @@
       },
       "uniqueConstraints": {}
     },
-    "expenses": {
-      "name": "expenses",
+    "group_expenses": {
+      "name": "group_expenses",
       "schema": "",
       "columns": {
         "id": {
@@ -234,9 +234,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "expenses_category_id_categories_id_fk": {
-          "name": "expenses_category_id_categories_id_fk",
-          "tableFrom": "expenses",
+        "group_expenses_category_id_categories_id_fk": {
+          "name": "group_expenses_category_id_categories_id_fk",
+          "tableFrom": "group_expenses",
           "tableTo": "categories",
           "columnsFrom": [
             "category_id"
@@ -247,9 +247,9 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "expenses_group_id_groups_id_fk": {
-          "name": "expenses_group_id_groups_id_fk",
-          "tableFrom": "expenses",
+        "group_expenses_group_id_groups_id_fk": {
+          "name": "group_expenses_group_id_groups_id_fk",
+          "tableFrom": "group_expenses",
           "tableTo": "groups",
           "columnsFrom": [
             "group_id"

@@ -38,14 +38,14 @@ export const usersToGroups = pgTable(
  * here, it will be one to many relation between two of them
  * in the join table
  */
-export const userRelations = relations(users, ({ many }) => ({
+export const userToGroupsRelations = relations(users, ({ many }) => ({
   usersToGroups: many(usersToGroups),
 }));
 
 /**
  * defined relation for groups
  */
-export const groupRelations = relations(groups, ({ many }) => ({
+export const groupToUsersRelations = relations(groups, ({ many }) => ({
   usersToGroups: many(usersToGroups),
 }));
 

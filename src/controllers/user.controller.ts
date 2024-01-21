@@ -4,13 +4,14 @@ import { UserService } from '../services/';
 import { GroupService } from '../services/group.service';
 
 export interface CustomRequest extends Request {
-  userId:  number;
+  userId: number;
 }
 
 export class UserController {
   async isAuthorized(req: Request, res: Response, next: NextFunction) {
     try {
       const token = req.headers.authorization?.split(' ')[1];
+      console.log({ token });
       const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET) as { userId: number };
 
       (req as CustomRequest).userId = decoded.userId;

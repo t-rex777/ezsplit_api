@@ -1,8 +1,8 @@
 import express from 'express';
-import { ExpenseController } from '../controllers/expense.controller';
+import { GroupExpenseController } from '../controllers/groupExpense.controller';
 
 const app = express();
-const { createExpense, deleteExpense, getAllExpenses, getExpenseById, updateExpense } = new ExpenseController();
+const { createExpense, deleteExpense, getAllExpenses, getExpenseById, updateExpense } = new GroupExpenseController();
 
 app.get('/:expenseId', getExpenseById);
 app.get('/', getAllExpenses);

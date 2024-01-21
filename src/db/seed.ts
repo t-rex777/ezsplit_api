@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import * as dotenv from 'dotenv';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
-import { groups, users, usersToGroups } from '../schema';
+import { groups, users } from '../schema';
 dotenv.config();
 
 if (!('DATABASE_URL' in process.env)) throw new Error('DATABASE_URL not found on .env.development');
@@ -36,9 +36,12 @@ const main = async () => {
 
   // console.log('Seed start', data1[0].id, data2[0].id);
   // !for deleting db data
-  await db.delete(usersToGroups);
-  await db.delete(users);
-  await db.delete(groups);
+  // await db.delete(usersToGroups);
+  // await db.delete(groupExpenses);
+  // await db.delete(expensesToGroupUsers);
+  // await db.delete(expensesToUsers);
+  // await db.delete(users);
+  // await db.delete(groups);
 
   // await db.insert(groups).values(data2);
   // await db.insert(users).values(data1);
