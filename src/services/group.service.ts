@@ -28,7 +28,7 @@ export class GroupService {
     });
   }
 
-  async addUsers(groupId: number, userIds: number[]) {
+  async addUsersToGroup(groupId: number, userIds: number[]) {
     const userGroupAssociations = new Array(userIds.length).fill('').map((_, i) => ({ userId: userIds[i], groupId }));
 
     return await this.db.insert(schema.usersToGroups).values(userGroupAssociations).returning().execute();

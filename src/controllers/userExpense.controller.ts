@@ -1,70 +1,87 @@
-import { Request, Response } from 'express';
-import { GroupExpenseService } from '../services';
+import { Response } from 'express';
+import { UserExpenseService } from '../services/userExpense.service';
+import { CustomRequest } from './user.controller';
 
-export class GroupExpenseController {
+export class UserExpenseController {
   /**
-   * @route POST /create
+   * @route POST /expenses/user/create
    */
-  async createExpense(req: Request, res: Response) {
+  async createExpense(req: CustomRequest, res: Response) {
     try {
       const data = req.body;
-      const expense = await new GroupExpenseService().create(data);
 
-      return res.status(200).json({ expense });
+      const expense = await new UserExpenseService(req.userId).create(data);
+
+      return res.status(200).json({ data: expense });
     } catch (error) {
+      console.error({ error });
       res.status(500).json({ error });
     }
   }
 
   /**
-   * @route GET
+   * @route GET /expenses/user
    */
-  async getAllExpenses(_req: Request, res: Response) {
+  async getAllExpenses(req: CustomRequest, res: Response) {
     try {
-      const groups = await new GroupExpenseService().all();
-      return res.status(200).json({ groups });
+      const expenses = await new UserExpenseService(req.userId).all();
+
+      const data = expenses.reduce((acc, curr, index) => {
+        acc[index] = { ...curr, category: curr.expense.category };
+        delete curr.expense.category;
+
+        return acc;
+      }, []);
+
+      return res.status(200).json({ data });
     } catch (error) {
+      console.error({ error });
       res.status(500).json({ error });
     }
   }
 
   /**
-   * @route GET /expenses/expenseId
+   * @route GET /expenses/user/expenseId
    */
-  async getExpenseById(req: Request, res: Response) {
+  async getExpenseById(req: CustomRequest, res: Response) {
     try {
-      const expense = await new GroupExpenseService().find(parseInt(req.params.expenseId));
-      return res.status(200).json({ expense });
+      const expense = await new UserExpenseService(req.userId).find(parseInt(req.params.expenseId));
+
+      return res.status(200).json({ data: expense });
     } catch (error) {
+      console.log(error);
+
       res.status(500).json({ error });
     }
   }
 
   /**
-   * @route PATCH expenses/update/expenseId
+   * @route PATCH expenses/user/update/expenseId
    */
-  async updateExpense(req: Request, res: Response) {
+  async updateExpense(req: CustomRequest, res: Response) {
     try {
       const data = req.body;
       const { expenseId } = req.params;
 
-      const user = await new GroupExpenseService().update(parseInt(expenseId), data);
+      const updatedExpense = await new UserExpenseService(req.userId).update(parseInt(expenseId), data);
 
-      return res.status(200).json({ user });
+      return res.status(200).json({ data: updatedExpense });
     } catch (error) {
+      console.error({ error });
       res.status(500).json({ error });
     }
   }
 
   /**
-   * @route DELETE /expenses/expenseId
+   * @route DELETE /expenses/user/delete/expenseId
    */
-  async deleteExpense(req: Request, res: Response) {
+  async deleteExpense(req: CustomRequest, res: Response) {
     try {
-      const { userId } = req.params;
-      const user = await new GroupExpenseService().delete(parseInt(userId));
+      const { expenseId } = req.params;
+      const user = await new UserExpenseService(req.userId).delete(parseInt(expenseId));
       return res.status(200).json({ user });
     } catch (error) {
+      console.error({ error });
       res.status(500).json({ error });
     }
   }

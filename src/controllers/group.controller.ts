@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import { GroupExpenseService } from '../services';
 import { GroupService } from '../services/group.service';
 import { CustomRequest } from './user.controller';
 
@@ -16,8 +17,10 @@ export class GroupController {
   async getAllGroups(req: CustomRequest, res: Response) {
     try {
       const groups = await new GroupService(req.userId).all();
+      const groupExpenseService = await new GroupExpenseService();
+      // TODO: users to group info
 
-      return res.status(200).json({ data: groups.map(({ group }) => group) });
+      return res.status(200).json({ data: groups.map(({ group }) => ({ ...group, users: [], expense: groupExpenseService.find(group.id) })) });
     } catch (error) {
       res.status(500).json({ error });
     }
@@ -59,7 +62,7 @@ export class GroupController {
       const { userIds } = req.body;
       const { groupId } = req.params;
 
-      const group = await new GroupService(req.userId).addUsers(parseInt(groupId), userIds);
+      const group = await new GroupService(req.userId).addUsersToGroup(parseInt(groupId), userIds);
       return res.status(200).json({ group });
     } catch (error) {
       res.status(500).json({ error });

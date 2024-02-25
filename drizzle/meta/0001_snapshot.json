@@ -1,6 +1,6 @@
 {
-  "id": "94197248-530c-4d87-8381-6b276e4ba0cf",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "7de967d4-9717-4e6d-8933-f2ca2d18e813",
+  "prevId": "94197248-530c-4d87-8381-6b276e4ba0cf",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -451,7 +451,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
         "expenses_to_users_expense_id_user_expenses_id_fk": {
@@ -464,7 +464,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -552,7 +552,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },

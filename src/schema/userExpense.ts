@@ -50,7 +50,7 @@ export const expensesToUsers = pgTable(
     amount: numeric('amount', { precision: 7, scale: 3 }).notNull(),
     isLender: boolean('is_lender').notNull(),
   },
-  (t) => ({ pk: primaryKey({ columns: [t.userId, t.amount, t.expenseId] }) }),
+  (t) => ({ pk: primaryKey({ columns: [t.userId, t.expenseId] }) }),
 );
 
 export const expenseToUserRelations = relations(expensesToUsers, ({ one }) => ({

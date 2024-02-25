@@ -2,7 +2,7 @@ import bodyParser from 'body-parser';
 import 'dotenv/config';
 import express from 'express';
 import { UserController } from './controllers';
-import { authRoutes, categoryRoutes, groupExpenseRoutes, groupRoutes, userRoutes } from './routes';
+import { authRoutes, categoryRoutes, groupExpenseRoutes, groupRoutes, userExpenseRoutes, userRoutes } from './routes';
 
 const { isAuthorized } = new UserController();
 
@@ -21,6 +21,7 @@ app.use('/api/users', authRoutes);
 app.use('/api/users', isAuthorized, userRoutes);
 app.use('/api/groups', isAuthorized, groupRoutes);
 app.use('/api/expenses/group', isAuthorized, groupExpenseRoutes);
+app.use('/api/expenses/user', isAuthorized, userExpenseRoutes);
 app.use('/api/category', isAuthorized, categoryRoutes);
 
 app.listen(port, () => {

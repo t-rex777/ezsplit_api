@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS "expenses_to_group_users" (
 	"expense_id" integer NOT NULL,
 	"amount" numeric(7, 3) NOT NULL,
 	"is_lender" boolean NOT NULL,
-	CONSTRAINT expenses_to_group_users_user_id_amount_expense_id PRIMARY KEY("user_id","amount","expense_id")
+	CONSTRAINT "expenses_to_group_users_user_id_amount_expense_id_pk" PRIMARY KEY("user_id","amount","expense_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "group_expenses" (
@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 CREATE TABLE IF NOT EXISTS "users_to_groups" (
 	"user_id" integer NOT NULL,
 	"group_id" integer NOT NULL,
-	CONSTRAINT users_to_groups_user_id_group_id PRIMARY KEY("user_id","group_id")
+	CONSTRAINT "users_to_groups_user_id_group_id_pk" PRIMARY KEY("user_id","group_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "expenses_to_users" (
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS "expenses_to_users" (
 	"expense_id" integer NOT NULL,
 	"amount" numeric(7, 3) NOT NULL,
 	"is_lender" boolean NOT NULL,
-	CONSTRAINT expenses_to_users_user_id_amount_expense_id PRIMARY KEY("user_id","amount","expense_id")
+	CONSTRAINT "expenses_to_users_user_id_expense_id_pk" PRIMARY KEY("user_id","expense_id")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user_expenses" (
