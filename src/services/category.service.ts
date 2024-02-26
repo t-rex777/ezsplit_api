@@ -4,12 +4,20 @@ import { pool } from '../db';
 import * as categorySchema from '../schema/category';
 
 export class CategoryService {
+  userId: number;
+
+  constructor(userId: number) {
+    this.userId = userId;
+  }
+
   get db() {
     return drizzle(pool, { schema: categorySchema });
   }
 
   async all() {
-    return this.db.query.categories.findMany();
+    return this.db.query.categories.findMany({
+      where: (expense, { eq }) => eq(expense.userId, this.userId),
+    });
   }
 
   async find(expenseId: number) {

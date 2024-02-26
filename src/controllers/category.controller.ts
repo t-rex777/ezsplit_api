@@ -1,53 +1,82 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { CategoryService } from '../services';
+import { CustomRequest } from './user.controller';
 
 export class CategoryController {
-  async createCategory(req: Request, res: Response) {
+  /**
+   * @route POST /category/create
+   */
+  async createCategory(req: CustomRequest, res: Response) {
     try {
       const data = req.body;
-      const category = await new CategoryService().create(data);
+      const category = await new CategoryService(req.userId).create(data);
       return res.status(200).json({ category });
     } catch (error) {
+      console.error(error);
+
       res.status(500).json({ error });
     }
   }
 
-  async getAllCategories(_req: Request, res: Response) {
+  /**
+   * @route GET /category
+   */
+  async getAllCategories(req: CustomRequest, res: Response) {
     try {
-      const categories = await new CategoryService().all();
+      const categories = await new CategoryService(req.userId).all();
       return res.status(200).json({ categories });
     } catch (error) {
+      console.error(error);
+
       res.status(500).json({ error });
     }
   }
 
-  async getCategoryById(req: Request, res: Response) {
+  /**
+   * @route GET /:categoryId
+   */
+  async getCategoryById(req: CustomRequest, res: Response) {
     try {
-      const category = await new CategoryService().find(parseInt(req.params.categoryId));
+      const category = await new CategoryService(req.userId).find(parseInt(req.params.categoryId));
       return res.status(200).json({ category });
     } catch (error) {
+      console.error(error);
+
       res.status(500).json({ error });
     }
   }
 
-  async updateCategory(req: Request, res: Response) {
+  /**
+   * @route PATCH /category/update/:categoryId
+   */
+  async updateCategory(req: CustomRequest, res: Response) {
     try {
       const data = req.body;
       const { categoryId } = req.params;
 
-      const category = await new CategoryService().update(parseInt(categoryId), data);
+      delete data.id;
+      delete data.userId;
+
+      const category = await new CategoryService(req.userId).update(parseInt(categoryId), data);
       return res.status(200).json({ category });
     } catch (error) {
+      console.error(error);
+
       res.status(500).json({ error });
     }
   }
 
-  async deleteCategory(req: Request, res: Response) {
+  /**
+   * @route DELETE /category/delete/:categoryId
+   */
+  async deleteCategory(req: CustomRequest, res: Response) {
     try {
       const { categoryId } = req.params;
-      const category = await new CategoryService().delete(parseInt(categoryId));
+      const category = await new CategoryService(req.userId).delete(parseInt(categoryId));
       return res.status(200).json({ category });
     } catch (error) {
+      console.error(error);
+
       res.status(500).json({ error });
     }
   }

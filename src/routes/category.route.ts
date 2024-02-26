@@ -7,7 +7,9 @@ const { createCategory, deleteCategory, getAllCategories, getCategoryById, updat
 app.get('/:categoryId', getCategoryById);
 app.get('/', getAllCategories);
 app.post('/create', createCategory);
-app.get('/update/:categoryId', updateCategory);
-app.get('/delete/:categoryId', deleteCategory);
+app.patch('/update/:categoryId', updateCategory);
+
+// TODO: group expenses dependency
+app.delete('/delete/:categoryId', deleteCategory);
 
 export default app;
