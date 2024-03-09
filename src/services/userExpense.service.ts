@@ -21,8 +21,16 @@ export class UserExpenseService {
   }
 
   async all() {
-    return this.db.query.expensesToUsers.findMany({
+    const commonExpense = await this.db.query.expensesToUsers.findMany({
       where: (expense, { eq }) => eq(expense.userId, this.userId),
+    });
+
+    return this.db.query.expensesToUsers.findMany({
+      where: (expense, { inArray }) =>
+        inArray(
+          expense.expenseId,
+          commonExpense.map((d) => d.expenseId),
+        ),
       columns: {
         expenseId: false,
         userId: false,

@@ -16,13 +16,13 @@ export class CategoryService {
 
   async all() {
     return this.db.query.categories.findMany({
-      where: (expense, { eq }) => eq(expense.userId, this.userId),
+      where: (category, { eq }) => eq(category.userId, this.userId),
     });
   }
 
-  async find(expenseId: number) {
+  async find(categoryId: number) {
     return this.db.query.categories.findFirst({
-      where: (expense, { eq }) => eq(expense.id, expenseId),
+      where: (category, { eq }) => eq(category.userId, this.userId) && eq(category.id, categoryId),
     });
   }
 
