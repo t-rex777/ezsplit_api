@@ -50,6 +50,8 @@ export class UserController {
       const access_token = jwt.sign({ userId: user.id }, process.env.JWT_ACCESS_SECRET, { expiresIn: '1d' });
       const refresh_token = jwt.sign({ userId: user.id }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
 
+      delete user.password;
+
       return res.status(200).json({ message: 'Login successful', user, access_token, refresh_token });
     } catch (error) {
       res.status(500).json({ error });
@@ -96,9 +98,9 @@ export class UserController {
     }
   }
 
-  async getUser(req: Request, res: Response) {
+  async getUser(req: CustomRequest, res: Response) {
     try {
-      const user = await new UserService().findById(parseInt(req.params.userId));
+      const user = await new UserService().findById(req.userId);
       return res.status(200).json({ user });
     } catch (error) {
       res.status(500).json({ error });

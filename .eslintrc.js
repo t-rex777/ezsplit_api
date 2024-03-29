@@ -19,5 +19,11 @@ module.exports = {
     'space-in-parens': 'error',
     'no-multiple-empty-lines': 'error',
     'prefer-const': 'error',
+    'no-console': [
+      2,
+      {
+        allow: ['warn', 'error'],
+      },
+    ],
   },
 };

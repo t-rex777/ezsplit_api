@@ -2,10 +2,10 @@ import express from 'express';
 import { UserController } from '../controllers';
 
 const app = express();
-const { getAllUsers, updateUser, deleteUser, getUser } = new UserController();
+const { getAllUsers, updateUser, deleteUser, getUser, isAuthorized } = new UserController();
 
-app.get('/:userId', getUser);
-app.get('/', getAllUsers);
+app.get('/current', isAuthorized, getUser);
+app.get('/all', getAllUsers);
 app.patch('/update/:userId', updateUser);
 app.delete('/delete/:userId', deleteUser);
 

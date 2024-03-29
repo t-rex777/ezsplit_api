@@ -31,6 +31,25 @@ interface Expense {
   }[];
 }
 
+interface IFriend {
+  id: string;
+  imageUrl: string;
+  name: string;
+  currency: string;
+  totalAmount: string;
+  isLender: boolean;
+  /**
+   * add support
+   */
+  // groups: {
+  //   id: string;
+  //   name: string;
+  //   image: string;
+  //   totalAmount: string;
+  //   isLender: boolean;
+  // };
+}
+
 export class UserExpenseController {
   /**
    * @route POST /expenses/user/create
@@ -55,26 +74,34 @@ export class UserExpenseController {
     try {
       const result = await new UserExpenseService(req.userId).all();
 
-      const data = result.reduce<Expense[]>((acc, curr) => {
-        const expense = acc.find((d) => d.id === curr.expense.id);
+      const data = result.reduce<IFriend[]>((acc, curr) => {
+        if (Number(curr.user.id) === Number(req.userId)) return acc;
 
-        if (expense === undefined) {
-          const data: Expense = {
-            id: curr.expense.id,
+        const friend = acc.find((friend) => Number(friend.id) === Number(curr.user.id));
+
+        if (friend === undefined) {
+          const data: IFriend = {
+            id: curr.user.id.toString(),
+            imageUrl: curr.user.image,
             currency: curr.expense.currency,
-            description: curr.expense.description,
-            image: curr.expense.image,
-            createdAt: curr.expense.createdAt,
-            modifiedAt: curr.expense.modifiedAt,
-            name: curr.expense.name,
-            totalAmount: curr.expense.totalAmount,
-            users: [{ ...curr.user, isLender: curr.isLender, amount: curr.amount }],
-            category: curr.expense.category,
+            name: curr.user.name,
+            totalAmount: curr.amount,
+            isLender: curr.isLender,
           };
 
           acc.push(data);
         } else {
-          expense.users.push({ ...curr.user, isLender: curr.isLender, amount: curr.amount });
+          if (curr.isLender) {
+            const totalAmount = Number(friend.totalAmount) + Number(curr.amount);
+
+            friend.isLender = totalAmount < 0 ? false : true;
+            friend.totalAmount = Math.abs(totalAmount).toString();
+          } else {
+            const totalAmount = Number(friend.totalAmount) - Number(curr.amount);
+
+            friend.isLender = totalAmount < 0 ? false : true;
+            friend.totalAmount = Math.abs(totalAmount).toString();
+          }
         }
 
         return acc;
@@ -102,7 +129,7 @@ export class UserExpenseController {
 
       return res.status(200).json({ data });
     } catch (error) {
-      console.log(error);
+      console.error(error);
 
       res.status(500).json({ error });
     }
