@@ -25,5 +25,6 @@ app.use('/api/expenses/user', isAuthorized, userExpenseRoutes);
 app.use('/api/category', isAuthorized, categoryRoutes);
 
 app.listen(port, () => {
+  // eslint-disable-next-line no-console
   return console.log(`Express is listening at http://localhost:${port}`);
 });

@@ -24,7 +24,7 @@ export class CategoryController {
   async getAllCategories(req: CustomRequest, res: Response) {
     try {
       const categories = await new CategoryService(req.userId).all();
-      return res.status(200).json({ categories });
+      return res.status(200).json({ data: categories });
     } catch (error) {
       console.error(error);
 

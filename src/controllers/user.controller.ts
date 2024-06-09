@@ -92,7 +92,7 @@ export class UserController {
   async getAllUsers(_req: Request, res: Response) {
     try {
       const users = await new UserService().all();
-      return res.status(200).json({ users });
+      return res.status(200).json({ data: users });
     } catch (error) {
       res.status(500).json({ error });
     }
