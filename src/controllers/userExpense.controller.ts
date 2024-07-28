@@ -81,38 +81,40 @@ export class UserExpenseController {
       const model = new UserExpenseService(req.userId);
       const result = await model.all();
 
-      const data = result.reduce<IFriend[]>((acc, curr) => {
-        if (Number(curr.user.id) === Number(req.userId)) return acc;
+      const data = result
+        .reduce<IFriend[]>((acc, curr) => {
+          if (Number(curr.user.id) === Number(req.userId)) return acc;
 
-        const friend = acc.find((friend) => Number(friend.id) === Number(curr.user.id));
+          const friend = acc.find((friend) => Number(friend.id) === Number(curr.user.id));
 
-        if (friend === undefined) {
-          const data: IFriend = {
-            id: curr.user.id.toString(),
-            imageUrl: curr.user.image,
-            currency: curr.expense.currency,
-            name: curr.user.name,
-            totalAmount: curr.amount,
-            isLender: curr.isLender,
-          };
+          if (friend === undefined) {
+            const data: IFriend = {
+              id: curr.user.id.toString(),
+              imageUrl: curr.user.image,
+              currency: curr.expense.currency,
+              name: curr.user.name,
+              totalAmount: curr.isLender ? curr.amount : '-' + curr.amount,
+              isLender: curr.isLender,
+            };
 
-          acc.push(data);
-        } else {
-          if (curr.isLender) {
-            const totalAmount = Number(friend.totalAmount) + Number(curr.amount);
-
-            friend.isLender = totalAmount < 0 ? false : true;
-            friend.totalAmount = Math.abs(totalAmount).toString();
+            acc.push(data);
           } else {
-            const totalAmount = Number(friend.totalAmount) - Number(curr.amount);
+            if (curr.isLender) {
+              const totalAmount = Number(friend.totalAmount) + Number(curr.amount);
 
-            friend.isLender = totalAmount < 0 ? false : true;
-            friend.totalAmount = Math.abs(totalAmount).toString();
+              friend.isLender = totalAmount < 0 ? false : true;
+              friend.totalAmount = totalAmount.toString();
+            } else {
+              const totalAmount = Number(friend.totalAmount) - Number(curr.amount);
+
+              friend.isLender = totalAmount < 0 ? false : true;
+              friend.totalAmount = totalAmount.toString();
+            }
           }
-        }
 
-        return acc;
-      }, []);
+          return acc;
+        }, [])
+        .map((d) => ({ ...d, totalAmount: Math.abs(Number(d.totalAmount)) }));
 
       // const totalExpenses = await model.total();
       // const totalPages = Math.ceil(totalExpenses.length / pageSize);
@@ -166,7 +168,7 @@ export class UserExpenseController {
   async getExpenseByFriendId(req: CustomRequest, res: Response) {
     try {
       const page = Number(req.query.page) || 1;
-      const pageSize = Number(req.query.page_size) || 1;
+      const pageSize = Number(req.query.page_size) || 9999;
 
       const term = String(req.query.term) || '';
 
@@ -192,19 +194,20 @@ export class UserExpenseController {
 
       const totalExpenses = await model.total();
 
-      const totalPages = Math.ceil(result.length / pageSize);
+      const totalPages = Math.ceil(totalExpenses / pageSize);
+
       const prevPage = page - 1 || null;
+      const nextPage = page * result.length === totalExpenses ? null : page + 1;
 
       return res.status(200).json({
         data: result,
+
         meta: {
           pagination: {
             total: totalExpenses,
             current_page: page,
             prev_page: prevPage,
-            // TODO: fix this
-            next_page: totalPages * result.length < totalExpenses ? null : page + 1,
-            // next_page: result.length < pageSize * (page + 1) ? null : page + 1,
+            next_page: nextPage,
             total_pages: totalPages,
           },
         },

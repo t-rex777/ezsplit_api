@@ -84,7 +84,7 @@ export class UserExpenseService {
 
   async getExpenseIdFromSearchTerm(term: string) {
     const schema = userExpenseSchema.userExpenses;
-    const expenses = await this.db.select({ name: schema.name, id: schema.id }).from(schema).execute();
+    const expenses = await this.db.select({ name: schema.name, id: schema.id }).from(schema).limit(10).execute();
 
     const fuse = new Fuse(expenses, {
       keys: ['name'],
@@ -101,8 +101,9 @@ export class UserExpenseService {
     const searchedIds = await this.getExpenseIdFromSearchTerm(term);
 
     return this.db.query.expensesToUsers.findMany({
-      limit: pageSize,
-      offset: (page - 1) * pageSize,
+      // because each expense has 2 users (lender and borrower)
+      limit: pageSize * 2,
+      offset: (page - 1) * pageSize * 2,
 
       where: (expensesToUsers, { eq, or, and, inArray }) =>
         // can't pass [] to inArray
