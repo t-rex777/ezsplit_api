@@ -14,6 +14,15 @@ interface ICreateUserExpense extends userExpenseSchema.NewUserExpense {
 export class UserExpenseService {
   userId: number;
 
+  /** it will accept dates in string and convert it to Date */
+  serializeDate({ createdAt, ...data }: userExpenseSchema.NewUserExpense) {
+    const result = Object.assign({}, data !== undefined && data, createdAt !== undefined && { createdAt: new Date(createdAt) }, {
+      modifiedAt: new Date(),
+    });
+
+    return result;
+  }
+
   constructor(userId: number) {
     this.userId = userId;
   }
@@ -123,7 +132,7 @@ export class UserExpenseService {
   }
 
   async create({ expenses, ...data }: ICreateUserExpense) {
-    const response = await this.db.insert(userExpenseSchema.userExpenses).values(data).returning();
+    const response = await this.db.insert(userExpenseSchema.userExpenses).values(this.serializeDate(data)).returning();
 
     const expensesToUsersData = expenses.map((expense) => ({
       amount: expense.amount,
@@ -138,7 +147,11 @@ export class UserExpenseService {
   }
 
   async update(expenseId: number, data: userExpenseSchema.UserExpense) {
-    return this.db.update(userExpenseSchema.userExpenses).set(data).where(eq(userExpenseSchema.userExpenses.id, expenseId)).returning();
+    return this.db
+      .update(userExpenseSchema.userExpenses)
+      .set(this.serializeDate({ ...data, modifiedAt: new Date() }))
+      .where(eq(userExpenseSchema.userExpenses.id, expenseId))
+      .returning();
   }
 
   async delete(expenseId: number) {
