@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/app.js",
   "scripts": {
-    "start": "'ts-node' ./src/app.ts",
+    "start": "NODE_ENV=production 'ts-node' ./src/app.ts",
     "lint": "eslint src/**/*.ts --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "NODE_ENV=development nodemon --watch './**/*.ts' --exec 'ts-node' ./src/app.ts",

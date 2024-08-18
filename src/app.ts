@@ -1,14 +1,6 @@
-import dotenv from 'dotenv';
-const env = dotenv.config({ path: [`.env.${process.env.NODE_ENV}`, '.env'] });
-
-if (env.error) {
-  console.error(env.parsed);
-
-  throw env.error;
-}
+import '../env.helper';
 
 import bodyParser from 'body-parser';
-import 'dotenv/config';
 import express from 'express';
 import { UserController } from './controllers';
 import { authRoutes, categoryRoutes, groupExpenseRoutes, groupRoutes, userExpenseRoutes, userRoutes } from './routes';

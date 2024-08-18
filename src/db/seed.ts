@@ -1,9 +1,9 @@
+import '../../env.helper';
+
 import { faker } from '@faker-js/faker';
-import * as dotenv from 'dotenv';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
 import { groups, users } from '../schema';
-dotenv.config();
 
 if (!('DATABASE_URL' in process.env)) throw new Error('DATABASE_URL not found on .env.development');
 
@@ -50,6 +50,7 @@ const main = async () => {
   //   userId: data1[0].id,
   // });
 
+  // eslint-disable-next-line no-console
   console.log('Seed done');
 };
 

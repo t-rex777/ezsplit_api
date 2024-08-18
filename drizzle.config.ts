@@ -1,7 +1,5 @@
-import dotenv from 'dotenv';
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+import '../env.helper';
 
-import 'dotenv/config';
 import type { Config } from 'drizzle-kit';
 
 export default {
