@@ -1,5 +1,11 @@
 import dotenv from 'dotenv';
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+const env = dotenv.config({ path: [`.env.${process.env.NODE_ENV}`, '.env'] });
+
+if (env.error) {
+  console.error(env.parsed);
+
+  throw env.error;
+}
 
 import bodyParser from 'body-parser';
 import 'dotenv/config';
