@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+
 import bodyParser from 'body-parser';
 import 'dotenv/config';
 import express from 'express';
@@ -23,6 +26,11 @@ app.use('/api/groups', isAuthorized, groupRoutes);
 app.use('/api/expenses/group', isAuthorized, groupExpenseRoutes);
 app.use('/api/expenses/user', isAuthorized, userExpenseRoutes);
 app.use('/api/category', isAuthorized, categoryRoutes);
+
+process.on('uncaughtException', (err) => {
+  // eslint-disable-next-line no-console
+  console.log(err);
+});
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console
