@@ -1,13 +1,15 @@
 import dotenv from 'dotenv';
-const env = dotenv.config({ path: process.env.NODE_ENV === 'production' ? '.env' : '.env.development' });
 
-if (env.error) {
-  console.error(env.parsed);
+if (process.env.NODE_ENV !== 'production') {
+  const env = dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+  if (env.error) {
+    console.error(env.parsed);
 
-  throw env.error;
+    throw env.error;
+  }
 }
+
+import 'dotenv/config';
 
 // eslint-disable-next-line no-console
 console.log(process.env.DATABASE_USER + ' connected successfully!');
-
-import 'dotenv/config';
