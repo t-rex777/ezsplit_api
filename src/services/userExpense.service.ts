@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import Fuse from 'fuse.js';
 import { pool } from '../db';
@@ -8,6 +8,10 @@ import * as userSchema from '../schema/user';
 import * as userExpenseSchema from '../schema/userExpense';
 
 interface ICreateUserExpense extends userExpenseSchema.NewUserExpense {
+  expenses: Array<{ user_id: number; amount: string; is_lender: boolean }>;
+}
+
+interface IUpdateUserExpense extends userExpenseSchema.UserExpense {
   expenses: Array<{ user_id: number; amount: string; is_lender: boolean }>;
 }
 
@@ -141,17 +145,40 @@ export class UserExpenseService {
       userId: expense.user_id,
     }));
 
-    await this.db.insert(userExpenseSchema.expensesToUsers).values(expensesToUsersData).returning();
+    const userExpenseSplit = await this.db.insert(userExpenseSchema.expensesToUsers).values(expensesToUsersData).returning();
 
-    return expenses;
+    return Object.assign({}, response[0], { expenses: userExpenseSplit });
   }
 
-  async update(expenseId: number, data: userExpenseSchema.UserExpense) {
-    return this.db
+  async update(expenseId: number, data: IUpdateUserExpense) {
+    const response = await this.db
       .update(userExpenseSchema.userExpenses)
       .set(this.serializeDate({ ...data, modifiedAt: new Date() }))
       .where(eq(userExpenseSchema.userExpenses.id, expenseId))
       .returning();
+
+    if (data.expenses !== undefined) {
+      const expensesToUsersData = data.expenses.map((expense) => ({
+        amount: expense.amount,
+        expenseId: response[0].id,
+        isLender: expense.is_lender,
+        userId: expense.user_id,
+      }));
+
+      const userExpenseSplit = expensesToUsersData.map(async (expense) => {
+        return await this.db
+          .update(userExpenseSchema.expensesToUsers)
+          .set(expense)
+          .where(
+            and(eq(userExpenseSchema.expensesToUsers.expenseId, expense.expenseId), eq(userExpenseSchema.expensesToUsers.userId, expense.userId)),
+          )
+          .returning();
+      });
+
+      return Object.assign({}, response, { expenses: userExpenseSplit });
+    }
+
+    return response;
   }
 
   async delete(expenseId: number) {
