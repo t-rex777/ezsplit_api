@@ -6,7 +6,7 @@ import postgres from 'postgres';
 export const pool = postgres(process.env.DATABASE_URL, {
   max: 1,
   ssl: {
-    rejectUnauthorized: process.env.NODE_ENV === 'production',
+    rejectUnauthorized: false,
   },
 });
 
