@@ -1,5 +1,5 @@
 import { eq } from 'drizzle-orm';
-import { drizzle } from 'drizzle-orm/postgres-js';
+import { drizzle } from 'drizzle-orm/node-postgres';
 import { pool } from '../db';
 import * as categorySchema from '../schema/category';
 

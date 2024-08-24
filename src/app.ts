@@ -1,7 +1,10 @@
 import '../env.helper';
 
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import express from 'express';
+import morgan from 'morgan';
+
 import { UserController } from './controllers';
 import { authRoutes, categoryRoutes, groupExpenseRoutes, groupRoutes, userExpenseRoutes, userRoutes } from './routes';
 
@@ -14,9 +17,20 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
+app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(bodyParser.json());
+
+//? loggers
+app.use(morgan(':method :url :status :response-time ms - :res[content-length]'));
+
+app.use((req, res, next) => {
+  // eslint-disable-next-line no-console
+  console.log('\x1b[33m' + '[REQUEST_BODY]: ' + JSON.stringify(req.body) + '\x1b[0m');
+
+  next();
+});
 
 app.use('/api/users', authRoutes);
 app.use('/api/users', isAuthorized, userRoutes);

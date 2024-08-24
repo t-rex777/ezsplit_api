@@ -12,4 +12,4 @@ if (process.env.NODE_ENV !== 'production') {
 import 'dotenv/config';
 
 // eslint-disable-next-line no-console
-console.log(process.env.DATABASE_USER + ' connected successfully!');
+console.log('Environment connected successfully!');
