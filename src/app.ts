@@ -11,7 +11,8 @@ import { authRoutes, categoryRoutes, groupExpenseRoutes, groupRoutes, userExpens
 const { isAuthorized } = new UserController();
 
 const app = express();
-const port = process.env.PORT || 8080;
+const hostname = '0.0.0.0';
+const port = Number(process.env.PORT) || 3000;
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
@@ -44,7 +45,7 @@ process.on('uncaughtException', (err) => {
   console.log(err);
 });
 
-app.listen(port, () => {
+app.listen(port, hostname, () => {
   // eslint-disable-next-line no-console
-  return console.log(`Express is listening at http://localhost:${port}`);
+  console.log(`Server running at http://${hostname}:${port}/`);
 });

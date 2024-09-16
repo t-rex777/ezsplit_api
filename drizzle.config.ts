@@ -1,4 +1,4 @@
-import '../env.helper';
+import './env.helper';
 
 import type { Config } from 'drizzle-kit';
 
@@ -9,9 +9,7 @@ export default {
   dialect: 'postgresql',
   dbCredentials: {
     host: 'localhost',
-    ssl: {
-      rejectUnauthorized: process.env.NODE_ENV === 'production',
-    },
+    ssl: false,
     port: Number(process.env.DATABASE_PORT),
     user: process.env.DATABASE_USER,
     password: process.env.DATABASE_PASSWORD,
