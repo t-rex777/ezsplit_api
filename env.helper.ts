@@ -1,6 +1,13 @@
 import dotenv from 'dotenv';
 
-const env = dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+let env;
+console.log(process.env.NODE_ENV, 'PPP');
+
+if (process.env.NODE_ENV === undefined) {
+  env = dotenv.config();
+} else {
+  env = dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+}
 
 if (env.error) {
   console.error(env.parsed);

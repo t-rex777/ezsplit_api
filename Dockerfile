@@ -14,14 +14,14 @@ COPY . .
 FROM base AS prod-deps
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
-# FROM base AS build
-# RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --dev
-# RUN pnpm run api build
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --dev
+RUN pnpm run build
 
 FROM base
-COPY --from=prod-deps /app /app
+COPY --from=prod-deps /app/node_modules /app/node_modules
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
 
-CMD ["pnpm", "run", "start"]
+CMD ["node", "dist/src/index.js"]
