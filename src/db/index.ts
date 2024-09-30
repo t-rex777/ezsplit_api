@@ -1,9 +1,11 @@
 import '../../env.helper';
 
 import { Client } from 'pg';
+const db = process.env.DATABASE_URL || 'postgres://postgres:spacex@localhost:5433/ezsplit';
+console.log(db + ' connected!', ' env ', process.env.DATABASE_URL);
 
 export const pool = new Client({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: db,
   ssl: false,
 });
 

@@ -1,7 +1,6 @@
 import dotenv from 'dotenv';
 
 let env;
-console.log(process.env.NODE_ENV, 'PPP');
 
 if (process.env.NODE_ENV === undefined) {
   env = dotenv.config();

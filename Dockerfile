@@ -35,8 +35,9 @@ COPY --link . .
 RUN pnpm run build
 
 # Remove development dependencies
-RUN pnpm prune --prod
+# RUN pnpm prune --prod
 
+RUN pnpm run db:migrate
 
 # Final stage for app image
 FROM base
@@ -45,5 +46,5 @@ FROM base
 COPY --from=build /app /app
 
 # Start the server by default, this can be overwritten at runtime
-EXPOSE 3000
+EXPOSE 8080
 CMD [ "pnpm", "run", "start" ]
