@@ -2,17 +2,16 @@ import './env.helper';
 
 import type { Config } from 'drizzle-kit';
 
+// eslint-disable-next-line no-console
+console.log('database url:' + process.env.DATABASE_URL);
+
 export default {
   schema: './src/schema/**/*.ts',
   out: './drizzle',
   // driver: 'pg',
   dialect: 'postgresql',
   dbCredentials: {
-    host: 'localhost',
+    url: process.env.DATABASE_URL,
     ssl: false,
-    port: Number(process.env.DATABASE_PORT),
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE_NAME,
   },
 } satisfies Config;

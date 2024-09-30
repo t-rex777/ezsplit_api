@@ -15,4 +15,4 @@ if (env.error) {
 }
 
 // eslint-disable-next-line no-console
-console.log('Environment connected successfully!');
+console.log('Environment connected successfully on ' + process.env.NODE_ENV + ' mode');

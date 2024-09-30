@@ -2,32 +2,34 @@
 version: '3.6'
 services:
   postgres:
+    env_file:
+      - .env.production
     image: postgres:13
     ports:
-      - '5433:5432' # expose pg on port 5632 to not collide with pg from elswhere
+      - '5434:5432' # expose pg on port 5632 to not collide with pg from elswhere
     restart: always
     volumes:
       - db_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: spacex
-      POSTGRES_HOST_AUTH_METHOD: trust
-      POSTGRES_DB: ezsplit
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 
   server:
     build: .
+    env_file:
+      - .env.production
     ports:
       - '8080:8080'
     restart: always
     depends_on:
       - postgres
-    environment:
-      NODE_ENV: production
-      DATABASE_URL: postgres://postgres:spacex@postgres:5433/ezsplit
-      DATABASE_PASSWORD: spacex
-      DATABASE_PORT: 5433
-      DATABASE_USER: postgres
-      DATABASE_NAME: ezsplit
+    # environment:
+    # NODE_ENV: production
+    # DATABASE_URL: postgresql://postgres:spacex@postgres:5434/ezsplit
+    # JWT_ACCESS_SECRET: 'omae wa shindeiru'
+    # JWT_REFRESH_SECRET: 'konichiwa'
+    # PORT: 8080
 
 volumes:
   db_data:
