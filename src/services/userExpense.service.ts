@@ -50,7 +50,9 @@ export class UserExpenseService {
       where: (expense, { eq }) => eq(expense.userId, this.userId),
     });
 
-    return await this.db.query.expensesToUsers.findMany({
+    if (commonExpense.length === 0) return [];
+
+    const result = await this.db.query.expensesToUsers.findMany({
       orderBy: (expense, { asc }) => asc(expense.expenseId),
 
       where: (expense, { inArray }) =>
@@ -74,6 +76,8 @@ export class UserExpenseService {
         },
       },
     });
+
+    return result;
   }
 
   async find(expenseId: number) {

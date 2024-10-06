@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { UserService } from '../services/';
+import { CategoryService, UserService } from '../services/';
 import { GroupService } from '../services/group.service';
 
 export interface CustomRequest extends Request {
@@ -70,7 +70,14 @@ export class UserController {
 
       const user = await new UserService().create(data);
 
-      return res.status(200).json({ user });
+      // TODO: remove when UI for category is added
+      const category = await new CategoryService(user[0].id).create({
+        name: 'grocery',
+        image: '',
+        userId: user[0].id,
+      });
+
+      return res.status(200).json({ user, category });
     } catch (error) {
       res.status(500).json({ error });
     }

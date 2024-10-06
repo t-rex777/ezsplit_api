@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import { UserService } from '../services/user.service';
 import { UserExpenseService } from '../services/userExpense.service';
 import { CustomRequest } from './user.controller';
 
@@ -34,6 +35,7 @@ interface IExpense {
 }
 
 interface IFriend {
+  hasExpense: boolean;
   id: string;
   imageUrl: string;
   name: string;
@@ -81,8 +83,29 @@ export class UserExpenseController {
       const model = new UserExpenseService(req.userId);
       const result = await model.all();
 
-      const data = result
-        .reduce<IFriend[]>((acc, curr) => {
+      // TODO: add friends for specific user, currently we are getting all users
+      const users = await new UserService().all();
+      let data: IFriend[] = [];
+
+      if (result.length === 0) {
+        // TODO: add proper types
+        data = users.reduce((acc: any, user: any) => {
+          if (Number(user.id) === Number(req.userId)) return acc;
+
+          acc.push({
+            totalAmount: '0',
+            id: user.id,
+            hasExpense: false,
+            imageUrl: user.image,
+            name: user.name,
+            currency: user.currency,
+            isLender: false,
+          });
+
+          return acc;
+        }, []);
+      } else {
+        data = result.reduce<IFriend[]>((acc, curr) => {
           if (Number(curr.user.id) === Number(req.userId)) return acc;
 
           const friend = acc.find((friend) => Number(friend.id) === Number(curr.user.id));
@@ -95,6 +118,7 @@ export class UserExpenseController {
               name: curr.user.name,
               totalAmount: curr.isLender ? curr.amount : '-' + curr.amount,
               isLender: curr.isLender,
+              hasExpense: true,
             };
 
             acc.push(data);
@@ -113,8 +137,8 @@ export class UserExpenseController {
           }
 
           return acc;
-        }, [])
-        .map((d) => ({ ...d, totalAmount: Math.abs(Number(d.totalAmount)) }));
+        }, []);
+      }
 
       // const totalExpenses = await model.total();
       // const totalPages = Math.ceil(totalExpenses.length / pageSize);
@@ -129,7 +153,7 @@ export class UserExpenseController {
       // };
 
       return res.status(200).json({
-        data,
+        data: data.map((d) => ({ ...d, totalAmount: Math.abs(Number(d.totalAmount)) })),
       });
     } catch (error) {
       console.error({ error });
