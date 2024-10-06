@@ -24,12 +24,6 @@ services:
     restart: always
     depends_on:
       - postgres
-    # environment:
-    # NODE_ENV: production
-    # DATABASE_URL: postgresql://postgres:spacex@postgres:5434/ezsplit
-    # JWT_ACCESS_SECRET: 'omae wa shindeiru'
-    # JWT_REFRESH_SECRET: 'konichiwa'
-    # PORT: 8080
 
 volumes:
   db_data:

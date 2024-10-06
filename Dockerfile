@@ -34,10 +34,11 @@ COPY --link . .
 # Build application
 RUN pnpm run build
 
+# RUN pnpm run db:generate
+# RUN pnpm run db:migrate
+
 # Remove development dependencies
 # RUN pnpm prune --prod
-
-RUN pnpm run db:migrate
 
 # Final stage for app image
 FROM base
