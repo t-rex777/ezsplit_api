@@ -72,7 +72,7 @@ export class UserExpenseController {
   }
 
   /**
-   * @route GET /expenses/user
+   * @route GET /expenses/users
    * add pagination and search here and write better function
    */
   async getAllExpenses(req: CustomRequest, res: Response) {
